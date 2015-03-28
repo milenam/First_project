@@ -1,0 +1,104 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.js"></script>
+    <title>Milena's assignment</title>
+    <style>
+
+      body {
+        font-family: Haltevica, Arial, sans-serif;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin-bottom: 5px;
+      }
+
+      a {
+        text-decoration: none;
+        color: #000;
+      }
+
+      .container {
+        max-width: 75em;
+        margin: 0 auto;
+        display: block;
+        overflow: hidden;
+      }
+
+      .list-of-products {
+        padding-left: 0px;
+        list-style: none;
+      }
+
+      .products {
+        width: 280px;
+        float: left;
+        text-align: center;
+        margin: 8px;
+        border: 1px solid #eee;
+        min-height: 330px;
+        margin-bottom: 30px;
+      }
+
+      .product-image {
+        width: 100%;
+      }
+
+      .tagline {
+        color: #888;
+        font-size: 18px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .container {
+          max-width: 37.25em;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .container {
+          max-width: 18.25em;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+  <div ng-controller='MyController' class="container">
+    <ul class="list-of-products">
+      <li ng-repeat="items in sales" class="products"> <!-- looping through an array of objects in 
+                                                        order to get an access to the object properties -->
+        <a href="{{items.url}}" target="_blank"> 
+          <img ng-src="{{items.photos.medium_half}}" class="product-image"/>
+        </a>
+        <a href="{{items.url}}" target="_blank">
+          <h1>{{items.name}}</h1>
+        </a>
+
+        <span class="tagline">{{items.tagline}}</span>
+      </li>
+    </ul>
+  </div>
+    <script>
+      angular.module('myApp', [])
+      .controller('MyController', function($scope, $http) {
+        var init = function () { //initializing function that runs on load
+           $http.get('/sales.json'). //$http is a special service that makes ajax requests
+            success(function(data, status, headers, config) {
+              $scope.sales = data.new_sales; //if everything is fine setting a scope to the returned data
+              console.log($scope.sales);
+            }).
+            error(function(data, status, headers, config) {
+              alert ("error"); 
+            });
+
+        };
+        init();
+      });
+    </script>
+
+  </body>
+</html>
